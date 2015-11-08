@@ -3,7 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
      >
-
+<LinearLayout 
+    
+    android:layout_height="100dp"
+    android:layout_width="fill_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:orientation="vertical"
+    >
+    <com.ldyy.myviews.CapatityBar
+        android:id="@+id/cbar_sdcard"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp" 
+        android:layout_weight="1"
+        />
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="手机容量"
+        />
+    <com.ldyy.myviews.CapatityBar
+        android:id="@+id/cbar_rom"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp" 
+        android:layout_weight="1"
+        />
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="sdcard容量"
+        />
+</LinearLayout>
     <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"

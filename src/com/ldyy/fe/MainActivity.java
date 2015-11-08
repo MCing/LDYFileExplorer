@@ -3,6 +3,8 @@ package com.ldyy.fe;
 
 import java.io.File;
 
+import com.ldyy.myviews.CapatityBar;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
@@ -31,14 +33,23 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		TextView tmpTv = (TextView) findViewById(R.id.textView1);
-         log(Environment.getExternalStorageState());
+//		TextView tmpTv = (TextView) findViewById(R.id.textView1);
 //         testSpaces();
-         String[] sdCardSpaces = getSpace(Environment.getExternalStorageDirectory());
-         String[] romSpaces = getSpace(Environment.getDataDirectory());
+		
+		CapatityBar romBar = (CapatityBar) findViewById(R.id.cbar_rom);
+		CapatityBar sdBar = (CapatityBar) findViewById(R.id.cbar_sdcard);
+		
+//		String[] sdCardSpaces = getSpace(Environment.getExternalStorageDirectory());
+//        String[] romSpaces = getSpace(Environment.getDataDirectory());
+        long[] sdCardSpaces = getSpaceNumber(Environment.getExternalStorageDirectory());
+        long[] romSpaces = getSpaceNumber(Environment.getDataDirectory());
+        
+		romBar.setData(romSpaces[0]	, romSpaces[1]);
+		sdBar.setData(sdCardSpaces[0], sdCardSpaces[1]);
+		
          
-         tmpTv.setText("SD卡总容量:"+sdCardSpaces[0]+"\nSD卡可用容量:"+sdCardSpaces[1]+
-         "\nRom总容量:"+romSpaces[0]+"\nRom可用容量:"+romSpaces[1]); 
+//         tmpTv.setText("SD卡总容量:"+sdCardSpaces[0]+"\nSD卡可用容量:"+sdCardSpaces[1]+
+//         "\nRom总容量:"+romSpaces[0]+"\nRom可用容量:"+romSpaces[1]); 
 		
 	}
 
@@ -80,6 +91,35 @@ public class MainActivity extends Activity {
         spaces[0] = Formatter.formatFileSize(getApplicationContext(), blockCount*blockSize);  
         spaces[1] = Formatter.formatFileSize(getApplicationContext(), blockSize*availableBlocks);  
         
+        return spaces;
+    }  
+	/**
+	 * 根据路径指向的文件系统得到文件系统的信息  
+	 * @param path
+	 * @return spaces[0] 总容量， spaces[1] 剩余容量
+	 */
+	@SuppressWarnings("deprecation")
+	@SuppressLint("NewApi")
+	private long[] getSpaceNumber(File path) {
+        //File path = Environment.getDataDirectory();
+		long[] spaces = new long[2];
+        StatFs stat = new StatFs(path.getPath());  
+        long blockCount = 0;  
+        long blockSize = 0; 
+        long availableBlocks = 0; 
+        
+        //兼容性
+        if(android.os.Build.VERSION.SDK_INT >= 18){
+        	blockCount = stat.getBlockCountLong();
+        	blockSize = stat.getBlockSizeLong();  
+        	availableBlocks = stat.getAvailableBlocksLong();
+        }else{
+        	blockCount = stat.getBlockCount();
+        	blockSize = stat.getBlockSize();  
+        	availableBlocks = stat.getAvailableBlocks();
+        }
+        spaces[0] = blockSize * blockCount;
+        spaces[1] = blockSize * availableBlocks;
         return spaces;
     }  
 	

@@ -139,8 +139,8 @@ public class GuideActivity extends Activity {
 	 * 判断是否为第一次使用应用程序
 	 */
 	public boolean isFirstEnter(){
-		return true;
-		//return PreferenceUtil.getBoolean(PREFERENCE_FIRSTBLOOD, true);
+
+		return PreferenceUtil.getBoolean(PREFERENCE_FIRSTBLOOD, true);
 	}
 	// 导航图片view的适配器，必须要实现的是下面四个方法
 			class NavigationPageAdapter extends PagerAdapter {
