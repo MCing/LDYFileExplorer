@@ -32,10 +32,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
-//		TextView tmpTv = (TextView) findViewById(R.id.textView1);
-//         testSpaces();
-		
+        testSpaces();
+		TextView sdTv = (TextView) findViewById(R.id.tv_sdcard);
+		TextView romTv = (TextView) findViewById(R.id.tv_rom);
 		CapatityBar romBar = (CapatityBar) findViewById(R.id.cbar_rom);
 		CapatityBar sdBar = (CapatityBar) findViewById(R.id.cbar_sdcard);
 		
@@ -44,12 +43,13 @@ public class MainActivity extends Activity {
         long[] sdCardSpaces = getSpaceNumber(Environment.getExternalStorageDirectory());
         long[] romSpaces = getSpaceNumber(Environment.getDataDirectory());
         
-		romBar.setData(romSpaces[0]	, romSpaces[1]);
-		sdBar.setData(sdCardSpaces[0], sdCardSpaces[1]);
+		romBar.setData(romSpaces[0]	, romSpaces[0] - romSpaces[1]);
+		sdBar.setData(sdCardSpaces[0], sdCardSpaces[0] - sdCardSpaces[1]);
 		
-         
-//         tmpTv.setText("SD卡总容量:"+sdCardSpaces[0]+"\nSD卡可用容量:"+sdCardSpaces[1]+
-//         "\nRom总容量:"+romSpaces[0]+"\nRom可用容量:"+romSpaces[1]); 
+		romTv.setText("手机容量 ：" + Formatter.formatFileSize(this, romSpaces[0]) + 
+				"    剩余容量 ：" + Formatter.formatFileSize(this, romSpaces[1]));
+		sdTv.setText("sdcard容量 ：" + Formatter.formatFileSize(this, sdCardSpaces[0]) + 
+				"    剩余容量 ：" + Formatter.formatFileSize(this, sdCardSpaces[1]));
 		
 	}
 
@@ -64,7 +64,7 @@ public class MainActivity extends Activity {
 	/**
 	 * 根据路径指向的文件系统得到文件系统的信息  
 	 * @param path
-	 * @return spaces[0] 总容量， spaces[1] 剩余容量
+	 * @return 转换成易于识别的字符串 spaces[0] 总容量， spaces[1] 剩余容量
 	 */
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
@@ -96,7 +96,7 @@ public class MainActivity extends Activity {
 	/**
 	 * 根据路径指向的文件系统得到文件系统的信息  
 	 * @param path
-	 * @return spaces[0] 总容量， spaces[1] 剩余容量
+	 * @return 字节总数 spaces[0] 总容量， spaces[1] 剩余容量
 	 */
 	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
@@ -137,6 +137,7 @@ public class MainActivity extends Activity {
         log(romSpaces3[0] + " system " + romSpaces3[1]);
         log(romSpaces4[0] + " extral sdcard " + romSpaces4[1]);
         log(romSpaces5[0] + " sdcard " + romSpaces5[1]);
+        log("external:"+Environment.getExternalStorageDirectory().getAbsolutePath());
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

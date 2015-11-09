@@ -11,6 +11,13 @@ import android.view.View;
 
 public class CapatityBar extends View {
 
+	private static String TAG = "CapatityBar";
+	private final boolean D = true;
+	private void log(String msg){
+		if(D){
+			Log.e(TAG, msg);
+		}
+	}
 	
 	private int width;
 	private int height;
@@ -26,7 +33,7 @@ public class CapatityBar extends View {
 	public CapatityBar(Context context,  AttributeSet attrs) {
 		super(context, attrs);
 		this.maxLength = 100;
-		this.currentLength = 50;
+		this.currentLength = 0;
 		mPaint = new Paint();
 		mPaint.setColor(Color.GRAY);
 		mPaint.setStyle(Paint.Style.STROKE);
@@ -49,7 +56,6 @@ public class CapatityBar extends View {
 		//获取控件高度和宽度
 		width = MeasureSpec.getSize(widthMeasureSpec);
 		height = MeasureSpec.getSize(heightMeasureSpec);
-		fillRectf = new RectF(0, 0, (float)currentLength/maxLength*width, height);
 		setMeasuredDimension(width, height);
 	}
 	
@@ -60,7 +66,10 @@ public class CapatityBar extends View {
 		super.onDraw(canvas);
 		if(width > height){
 			fillRectf.set(0, 0, (float)currentLength/maxLength*width, height);
-			Log.e("", (float)currentLength/maxLength*width+":"+width);
+//			log((float)currentLength/maxLength*width+":"+width);
+//			log("currentLength"+currentLength);
+//			log("maxLength"+maxLength);
+			
 		}else{
 			fillRectf.set(0, height - (float)currentLength/maxLength*height, width, height);
 		}
@@ -74,7 +83,6 @@ public class CapatityBar extends View {
 		}
 		this.maxLength = max;
 		this.currentLength = curr;
-		
 		
 	}
 
